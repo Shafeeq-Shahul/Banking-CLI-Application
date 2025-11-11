@@ -17,4 +17,4 @@ A CLI based simple Banking application in Java and describing Banking core Funct
 2. Withdraw the amount from the account.
 3. Can able to see transaction history of deposit and withdrawal action with Local Date and Time.
 4. Can able to see the Customer's account details.
-5. To the CLI application.
+5. To exit the CLI application.
