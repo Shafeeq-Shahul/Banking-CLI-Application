@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,6 +13,9 @@ public class BankService {
 
     // to store the deposit and withdraw action with date and time
     private final ArrayList<String> transactionHistory = new ArrayList<>();
+
+    // to prevent duplication
+    private int lastLoggedIndex = 0;
 
     public BankService(BankAccount bankAccount, BankMethods bankMethods) {
         this.bankAccount = bankAccount;
@@ -47,6 +53,20 @@ public class BankService {
         }
     }
 
+    private void logData() throws IOException {
+        File transactionFile = new File("output.txt");
+        if (!transactionFile.exists()) {
+            transactionFile.createNewFile();
+        }
+        try (FileWriter fileWriter = new FileWriter(transactionFile, true)) {
+            for (int i = lastLoggedIndex; i < transactionHistory.size(); i++) {
+                fileWriter.write(transactionHistory.get(i) + System.lineSeparator());
+            }
+            lastLoggedIndex = transactionHistory.size();
+            System.out.println("Successfully logged.");
+        }
+    }
+
     private void displayApplication() {
         System.out.println(
                 """
@@ -56,8 +76,9 @@ public class BankService {
                         1. Deposit Funds
                         2. Withdraw Funds
                         3. View Transaction History
-                        4. View Account Details
-                        5. Exit
+                        4. Log Data into the File
+                        5. View Account Details
+                        6. Exit
                         -------------------------------
                 """
         );
@@ -83,9 +104,16 @@ public class BankService {
                 showTransactionHistory();
             }
             else if (option == 4) {
-                showAccountDetails();
+                try {
+                    logData();
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
             }
             else if (option == 5) {
+                showAccountDetails();
+            }
+            else if (option == 6) {
                 System.out.println("Exit...");
                 break;
             }
