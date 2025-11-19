@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class BankingApplication {
 
-    public void startApplication() {
+    public static void startApplication() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the Account number : ");
         String ac = scanner.nextLine();
@@ -21,3 +21,4 @@ public class BankingApplication {
         scanner.close();
     }
 }
+
